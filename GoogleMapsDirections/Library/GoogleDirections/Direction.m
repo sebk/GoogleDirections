@@ -28,6 +28,8 @@
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
         NSDictionary *jsonDict = (NSDictionary*)JSON;
+        
+        [self parsePolyLine:jsonDict];
                 
         NSArray *legs = ((NSArray*)jsonDict[@"routes"])[0][@"legs"];
         [legs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -50,6 +52,16 @@
     }];
     
     [operation start];
+}
+
+- (void)parsePolyLine:(NSDictionary *)response {
+    NSArray *routes = [response objectForKey:@"routes"];
+    NSDictionary *route = [routes lastObject];
+    if (route) {
+        NSString *overviewPolyline = [[route objectForKey:
+                                       @"overview_polyline"] objectForKey:@"points"];
+        _polyline = [NSArray arrayWithArray:[Direction decodePolyLine:[overviewPolyline mutableCopy]]];
+    }
 }
 
 -(NSArray*)processSteps:(NSArray*)steps {
