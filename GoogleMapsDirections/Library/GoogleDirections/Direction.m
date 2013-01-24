@@ -29,6 +29,20 @@
         
         NSDictionary *jsonDict = (NSDictionary*)JSON;
         
+        if (jsonDict[@"status"] && [jsonDict[@"status"] isEqualToString:@"ZERO_RESULTS"]) {
+            NSLog(@"Error requesting direction. No results");
+            
+            NSString *domain = @"de.gobas.GoogleDirections.Error";
+            NSString *desc = @"No results for route";
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
+            NSError *error = [NSError errorWithDomain:domain
+                                                 code:-101
+                                             userInfo:userInfo];
+            
+            resultBlock(nil, error);
+            return;
+        }
+        
         [self parsePolyLine:jsonDict];
                 
         NSArray *legs = ((NSArray*)jsonDict[@"routes"])[0][@"legs"];
