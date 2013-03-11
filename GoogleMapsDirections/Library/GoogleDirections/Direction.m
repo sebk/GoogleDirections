@@ -29,22 +29,15 @@
         
         NSDictionary *jsonDict = (NSDictionary*)JSON;
         
-        if (jsonDict[@"status"] && [jsonDict[@"status"] isEqualToString:@"ZERO_RESULTS"]) {
-            NSLog(@"Error requesting direction. No results");
+        [self parsePolyLine:jsonDict];
+        
+        if ([[jsonDict valueForKey:@"routes"] count]==0) {
+            //no route available
             
-            NSString *domain = @"de.gobas.GoogleDirections.Error";
-            NSString *desc = @"No results for route";
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : desc };
-            NSError *error = [NSError errorWithDomain:domain
-                                                 code:-101
-                                             userInfo:userInfo];
-            
-            resultBlock(nil, error);
+            resultBlock(nil,nil);
             return;
         }
         
-        [self parsePolyLine:jsonDict];
-                
         NSArray *legs = ((NSArray*)jsonDict[@"routes"])[0][@"legs"];
         [legs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
