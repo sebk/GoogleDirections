@@ -26,7 +26,7 @@
     CLLocationCoordinate2D endPoint = CLLocationCoordinate2DMake(52.2792904, 10.51886000000001);
     
     Direction *direction = [[Direction alloc] init];
-    [direction requestWithStartPoint:startPoint endPoint:endPoint travelMode:@"driving" result:^(NSArray *steps, NSError *error) {
+    [direction requestWithStartPoint:startPoint endPoint:endPoint travelMode:@"driving" language:@"en" result:^(NSArray *steps, NSError *error) {
         if (!error) {
             NSLog(@"RESULT: %@", [steps[0] description]);
         }

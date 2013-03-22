@@ -13,13 +13,17 @@
 
 @implementation Direction
 
--(void)requestWithStartPoint:(CLLocationCoordinate2D)start endPoint:(CLLocationCoordinate2D)end travelMode:(NSString*)travel result:(DirectionBlock)resultBlock {
+-(void)requestWithStartPoint:(CLLocationCoordinate2D)start endPoint:(CLLocationCoordinate2D)end travelMode:(NSString*)travel language:(NSString*)lng result:(DirectionBlock)resultBlock {
 
     _startPoint = start;
     _endPoint = end;
     _travelMode = travel;
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=true&mode=%@", start.latitude, start.longitude, end.latitude, end.longitude, travel] ];
+    if (lng.length == 0) {
+        lng = @"en";
+    }
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&sensor=true&mode=%@&language=%@", start.latitude, start.longitude, end.latitude, end.longitude, travel, lng] ];
     
     NSLog(@"URL for Request: %@", [url absoluteString]);
     

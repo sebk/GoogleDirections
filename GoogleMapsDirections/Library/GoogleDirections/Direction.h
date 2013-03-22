@@ -27,7 +27,7 @@ typedef void (^DirectionBlock)(NSArray *steps, NSError *error);
 @property(nonatomic, strong, readonly) NSArray *polyline;
 
 
--(void)requestWithStartPoint:(CLLocationCoordinate2D)start endPoint:(CLLocationCoordinate2D)end travelMode:(NSString*)travel result:(DirectionBlock)resultBlock;
+-(void)requestWithStartPoint:(CLLocationCoordinate2D)start endPoint:(CLLocationCoordinate2D)end travelMode:(NSString*)travel language:(NSString*)lng result:(DirectionBlock)resultBlock;
 
 +(NSMutableArray *)decodePolyLine: (NSMutableString *)encoded;
 
